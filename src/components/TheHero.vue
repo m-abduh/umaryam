@@ -24,7 +24,7 @@ function scrollToCatalog() {
 const highlights = [
   { label: 'Telur kampung', emoji: '🥚' },
   { label: 'DOC kampung', emoji: '🐣' },
-  { label: 'Ayam kampung', emoji: '🍗' },
+  { label: 'Ayam kampung', emoji: '🐓' },
 ]
 </script>
 
@@ -116,7 +116,7 @@ const highlights = [
             :animate="{ y: [0, -14, 0] }"
             :transition="{ duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }"
           >
-            🍗
+            🐓
           </motion.span>
 
           <div class="absolute -bottom-6 left-1/2 w-[88%] -translate-x-1/2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur">

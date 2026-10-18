@@ -1,20 +1,20 @@
 export const brand = {
-  name: 'Umaryam',
+  name: 'Umayam',
   tagline: 'Spesialis Ayam Kampung',
-  headline: 'Spesialis Ayam Kampung, dari Telur, DOC, hingga Siap Potong.',
+  headline: 'Spesialis Ayam Kampung: Telur, DOC, dan Ayam Kampung.',
   description:
-    'Umaryam menyediakan telur, DOC, dan ayam kampung siap potong. Pilih produk, tentukan jumlahnya, lalu lanjutkan pemesanan dengan mudah.',
+    'Umayam menyediakan telur, DOC, dan ayam kampung. Pilih produk, tentukan jumlahnya, lalu lanjutkan pemesanan dengan mudah.',
 }
 
 export const whatsapp = {
-  number: '6282186069178',
-  greeting: 'Halo Umaryam, saya ingin memesan:',
+  number: '6285789856504',
+  greeting: 'Halo Umayam, saya ingin memesan:',
 }
 
 export const contact = {
   address: 'Jl. Peternakan Raya No. 10, Indonesia',
   hours: 'Setiap hari, 07.00 - 20.00 WIB',
-  email: 'pesan@umaryam.id',
+  email: 'pesan@umayam.id',
 }
 
 export const navLinks = [

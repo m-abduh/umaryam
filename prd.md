@@ -1,4 +1,4 @@
-# PRD — UMARYAM
+# PRD — UMAYAM
 ## Product Requirements Document
 
 **Versi:** 1.0.0  
@@ -15,23 +15,23 @@
 
 ## 1.1 Deskripsi Produk
 
-Umaryam adalah website katalog dan pemesanan yang berfokus pada **ayam kampung**, memungkinkan pelanggan menemukan produk, menentukan jumlah pembelian, mengelola keranjang, dan melanjutkan pemesanan melalui WhatsApp.
+Umayam adalah website katalog dan pemesanan yang berfokus pada **ayam kampung**, memungkinkan pelanggan menemukan produk, menentukan jumlah pembelian, mengelola keranjang, dan melanjutkan pemesanan melalui WhatsApp.
 
 Website dirancang dengan pengalaman belanja yang sederhana, modern, cepat, dan nyaman digunakan, terutama melalui perangkat mobile.
 
 Seluruh produk yang dijual berasal dari ayam kampung. Tidak ada produk dari jenis ayam lain.
 
-Produk utama Umaryam terdiri dari tiga kategori:
+Produk utama Umayam terdiri dari tiga kategori:
 
 1. **Telur** — telur ayam kampung dengan satuan penjualan yang jelas.
 2. **DOC** — Day-Old Chick atau anak ayam kampung umur sehari.
-3. **Ayam Kampung** — ayam kampung yang dijual siap potong untuk kebutuhan konsumsi.
+3. **Ayam Kampung** — ayam kampung yang dijual utuh untuk kebutuhan konsumsi.
 
 MVP berfokus pada pengalaman frontend tanpa backend dan database. Data produk dikelola secara statis, sedangkan keranjang dikelola melalui Pinia dan dapat disimpan secara lokal menggunakan `localStorage`.
 
 ## 1.2 Visi Produk
 
-Menjadikan Umaryam sebagai tempat yang memudahkan pelanggan menemukan dan memesan kebutuhan ayam serta telur melalui pengalaman belanja digital yang praktis.
+Menjadikan Umayam sebagai tempat yang memudahkan pelanggan menemukan dan memesan kebutuhan ayam serta telur melalui pengalaman belanja digital yang praktis.
 
 ## 1.3 Tujuan Utama
 
@@ -79,7 +79,7 @@ Contoh kebutuhan pengguna:
 
 ## 2.3 Solusi
 
-Umaryam menyediakan katalog produk terpusat, keranjang belanja interaktif, serta fitur checkout yang menyusun daftar pesanan secara otomatis.
+Umayam menyediakan katalog produk terpusat, keranjang belanja interaktif, serta fitur checkout yang menyusun daftar pesanan secara otomatis.
 
 ---
 
@@ -129,9 +129,9 @@ Fitur tersebut dapat dipertimbangkan setelah kebutuhan bisnis tervalidasi.
 
 ## 4.1 Identitas Brand
 
-**Nama:** Umaryam
+**Nama:** Umayam
 
-**Posisi:** Spesialis ayam kampung — telur, DOC, dan ayam kampung siap potong.
+**Posisi:** Spesialis ayam kampung — telur, DOC, dan ayam kampung.
 
 Karakter brand:
 
@@ -288,7 +288,7 @@ Memberikan identitas brand dan akses cepat ke navigasi serta keranjang.
 
 ### Komponen
 
-- Logo atau wordmark Umaryam.
+- Logo atau wordmark Umayam.
 - Link Beranda.
 - Link Telur.
 - Link DOC.
@@ -312,7 +312,7 @@ Navbar tidak boleh terlalu tinggi, terlalu padat, atau mengambil ruang berlebiha
 
 ### Tujuan
 
-Menjelaskan penawaran Umaryam dalam beberapa detik pertama.
+Menjelaskan penawaran Umayam dalam beberapa detik pertama.
 
 ### Konten
 
@@ -403,7 +403,7 @@ Satuan penjualan harus eksplisit, misalnya per ekor atau per kilogram. Untuk pro
 
 ## 6.6 Section Keunggulan
 
-Menjelaskan manfaat yang benar-benar dapat diberikan Umaryam.
+Menjelaskan manfaat yang benar-benar dapat diberikan Umayam.
 
 Contoh:
 
@@ -426,4 +426,4 @@ Gunakan tiga langkah visual:
 
 Berisi:
 
-- Identitas Umaryam
+- Identitas Umayam

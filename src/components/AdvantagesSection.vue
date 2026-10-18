@@ -4,7 +4,7 @@ import Reveal from '@/components/Reveal.vue'
 const advantages = [
   {
     title: 'Fokus ayam kampung',
-    description: 'Semua produk adalah ayam kampung asli: telur, DOC, hingga siap potong.',
+    description: 'Semua produk adalah ayam kampung asli: telur, DOC, hingga ayam kampung.',
     icon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
   },
   {
@@ -34,10 +34,10 @@ const advantages = [
             class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-700 ring-1 ring-brand-100"
           >
             <span class="h-1.5 w-1.5 rounded-full bg-brand-500" />
-            Kenapa Umaryam
+            Kenapa Umayam
           </span>
           <h2 class="mt-4 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-            Spesialis ayam kampung, dari telur hingga siap potong
+            Semua kebutuhan ayam kampung dalam satu tempat
           </h2>
           <p class="mt-3 text-sm leading-relaxed text-slate-500 sm:text-base">
             Kami fokus pada ayam kampung dan merapikan proses belanja agar Anda cukup memilih produk

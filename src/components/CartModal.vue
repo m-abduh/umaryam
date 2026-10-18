@@ -143,7 +143,7 @@ watch(
             <div>
               <h3 class="text-base font-bold text-slate-900">Keranjang masih kosong</h3>
               <p class="mt-1 text-sm text-slate-500">
-                Pilih produk telur, DOC, atau ayam kampung siap potong untuk mulai memesan.
+                Pilih produk telur, DOC, atau ayam kampung untuk mulai memesan.
               </p>
             </div>
             <motion.button

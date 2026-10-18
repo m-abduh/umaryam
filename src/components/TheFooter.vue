@@ -22,8 +22,7 @@ function goTo(href: string) {
           </div>
           <p class="mt-4 max-w-sm text-sm leading-relaxed text-slate-500">
             {{ brand.name }} adalah spesialis ayam kampung yang menyediakan telur, DOC, dan ayam
-            kampung siap potong dengan informasi yang jelas serta pemesanan praktis melalui
-            WhatsApp.
+            kampung dengan informasi yang jelas serta pemesanan praktis melalui WhatsApp.
           </p>
         </div>
 

@@ -12,7 +12,7 @@ export interface CartItem extends Product {
   lineTotal: number
 }
 
-const STORAGE_KEY = 'umaryam:cart:v1'
+const STORAGE_KEY = 'umayam:cart:v1'
 
 function loadLines(): CartLine[] {
   try {
