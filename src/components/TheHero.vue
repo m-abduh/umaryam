@@ -25,22 +25,27 @@ function scrollToCatalog() {
 const visualRef = ref<HTMLElement | null>(null)
 const pointerX = useMotionValue(0)
 const pointerY = useMotionValue(0)
-const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-14, 14]), {
-  stiffness: 120,
-  damping: 16,
+const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-10, 10]), {
+  stiffness: 90,
+  damping: 20,
 })
-const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [12, -12]), {
-  stiffness: 120,
-  damping: 16,
+const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [9, -9]), {
+  stiffness: 90,
+  damping: 20,
 })
 
 let reduceMotion = false
+let rect: DOMRect | null = null
+
+function onPointerEnter() {
+  rect = visualRef.value?.getBoundingClientRect() ?? null
+}
 
 function onPointerMove(event: PointerEvent) {
   if (reduceMotion || event.pointerType !== 'mouse') return
   const el = visualRef.value
   if (!el) return
-  const rect = el.getBoundingClientRect()
+  if (!rect) rect = el.getBoundingClientRect()
   pointerX.set((event.clientX - rect.left) / rect.width - 0.5)
   pointerY.set((event.clientY - rect.top) / rect.height - 0.5)
 }
@@ -48,6 +53,7 @@ function onPointerMove(event: PointerEvent) {
 function resetTilt() {
   pointerX.set(0)
   pointerY.set(0)
+  rect = null
 }
 
 const orbitRadius = 138
@@ -96,14 +102,14 @@ onUnmounted(() => {
   <section id="beranda" class="relative overflow-hidden bg-white pt-28 pb-16 sm:pt-32 lg:pb-24">
     <div class="pointer-events-none absolute inset-0 -z-10">
       <motion.div
-        class="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl"
-        :animate="{ y: [0, 26, 0], scale: [1, 1.08, 1] }"
-        :transition="{ duration: 12, repeat: Infinity, ease: 'easeInOut' }"
+        class="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl will-change-transform"
+        :animate="{ y: [0, 26, 0] }"
+        :transition="{ duration: 14, repeat: Infinity, ease: 'easeInOut' }"
       />
       <motion.div
-        class="absolute -right-16 top-40 h-80 w-80 rounded-full bg-brand-50 blur-3xl"
-        :animate="{ y: [0, -30, 0], scale: [1, 1.12, 1] }"
-        :transition="{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1 }"
+        class="absolute -right-16 top-40 h-80 w-80 rounded-full bg-brand-50 blur-3xl will-change-transform"
+        :animate="{ y: [0, -30, 0] }"
+        :transition="{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 1 }"
       />
     </div>
 
@@ -163,9 +169,19 @@ onUnmounted(() => {
       <div
         ref="visualRef"
         class="relative [perspective:1100px]"
+        @pointerenter="onPointerEnter"
         @pointermove="onPointerMove"
         @pointerleave="resetTilt"
       >
+        <div
+          class="pointer-events-none absolute -inset-6 rounded-[3.5rem] bg-brand-200/40 blur-2xl"
+        />
+        <motion.div
+          class="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-300/40 blur-3xl will-change-[opacity]"
+          :animate="{ opacity: [0.45, 0.85, 0.45] }"
+          :transition="{ duration: 7, repeat: Infinity, ease: 'easeInOut' }"
+        />
+
         <motion.div
           class="relative"
           :initial="{ opacity: 0, scale: 0.94, y: 30 }"
@@ -174,23 +190,14 @@ onUnmounted(() => {
           :style="{ rotateX, rotateY, transformPerspective: 1100 }"
         >
           <div
-            class="pointer-events-none absolute -inset-6 -z-10 rounded-[3.5rem] bg-brand-200/40 blur-2xl"
-          />
-          <motion.div
-            class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-300/40 blur-3xl"
-            :animate="{ scale: [1, 1.16, 1], opacity: [0.65, 1, 0.65] }"
-            :transition="{ duration: 6, repeat: Infinity, ease: 'easeInOut' }"
-          />
-
-          <div
             class="relative mx-auto flex h-80 w-full max-w-md items-center justify-center rounded-[2.5rem] border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-brand-100/70 shadow-[var(--shadow-soft)] sm:h-96 lg:h-[26rem]"
           >
             <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[2.5rem]">
               <motion.div
-                class="absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 opacity-70"
+                class="absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 opacity-70 will-change-transform"
                 style="background: conic-gradient(from 0deg, transparent 0deg, rgba(34, 197, 94, 0.22) 90deg, transparent 180deg, rgba(74, 222, 128, 0.2) 270deg, transparent 360deg)"
                 :animate="{ rotate: 360 }"
-                :transition="{ duration: 22, repeat: Infinity, ease: 'linear' }"
+                :transition="{ duration: 24, repeat: Infinity, ease: 'linear' }"
               />
             </div>
 
@@ -199,9 +206,9 @@ onUnmounted(() => {
                 class="absolute left-1/2 top-1/2 h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-brand-200/70"
               />
               <motion.div
-                class="absolute inset-0"
+                class="absolute inset-0 will-change-transform"
                 :animate="{ rotate: 360 }"
-                :transition="{ duration: 26, repeat: Infinity, ease: 'linear' }"
+                :transition="{ duration: 30, repeat: Infinity, ease: 'linear' }"
               >
                 <span
                   v-for="node in orbit"
@@ -210,9 +217,9 @@ onUnmounted(() => {
                   :style="orbitStyle(node.angle)"
                 >
                   <motion.span
-                    class="flex items-center gap-1.5 whitespace-nowrap rounded-2xl border border-brand-100 bg-white/95 py-1.5 pl-2 pr-2.5 text-[11px] font-semibold text-slate-700 shadow-md backdrop-blur"
+                    class="flex items-center gap-1.5 whitespace-nowrap rounded-2xl border border-brand-100 bg-white py-1.5 pl-2 pr-2.5 text-[11px] font-semibold text-slate-700 shadow-md"
                     :animate="{ rotate: -360 }"
-                    :transition="{ duration: 26, repeat: Infinity, ease: 'linear' }"
+                    :transition="{ duration: 30, repeat: Infinity, ease: 'linear' }"
                   >
                     <span class="text-base">{{ node.emoji }}</span>
                     {{ node.label }}
