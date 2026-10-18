@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { motion } from 'motion-v'
-import { brand, whatsapp } from '@/config'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion-v'
+import { brand } from '@/config'
 import { buildWhatsAppLink } from '@/lib/whatsapp'
 
 const container = {
@@ -21,18 +22,89 @@ function scrollToCatalog() {
   document.querySelector('#telur')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-const highlights = [
-  { label: 'Telur kampung', emoji: '🥚' },
-  { label: 'DOC kampung', emoji: '🐣' },
-  { label: 'Ayam kampung', emoji: '🐓' },
+const visualRef = ref<HTMLElement | null>(null)
+const pointerX = useMotionValue(0)
+const pointerY = useMotionValue(0)
+const rotateY = useSpring(useTransform(pointerX, [-0.5, 0.5], [-14, 14]), {
+  stiffness: 120,
+  damping: 16,
+})
+const rotateX = useSpring(useTransform(pointerY, [-0.5, 0.5], [12, -12]), {
+  stiffness: 120,
+  damping: 16,
+})
+
+let reduceMotion = false
+
+function onPointerMove(event: PointerEvent) {
+  if (reduceMotion || event.pointerType !== 'mouse') return
+  const el = visualRef.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  pointerX.set((event.clientX - rect.left) / rect.width - 0.5)
+  pointerY.set((event.clientY - rect.top) / rect.height - 0.5)
+}
+
+function resetTilt() {
+  pointerX.set(0)
+  pointerY.set(0)
+}
+
+const orbitRadius = 138
+const orbit = [
+  { emoji: '🥚', label: 'Telur kampung', angle: -90 },
+  { emoji: '🐣', label: 'DOC kampung', angle: 30 },
+  { emoji: '🐓', label: 'Ayam kampung', angle: 150 },
 ]
+
+const centerItems = ['🥚', '🐣', '🐓']
+const centerIndex = ref(0)
+let centerTimer: number | undefined
+
+function orbitStyle(angle: number) {
+  const rad = (angle * Math.PI) / 180
+  return {
+    left: `calc(50% + ${Math.cos(rad) * orbitRadius}px)`,
+    top: `calc(50% + ${Math.sin(rad) * orbitRadius}px)`,
+    transform: 'translate(-50%, -50%)',
+  }
+}
+
+const particles = Array.from({ length: 6 }).map((_, index) => ({
+  id: index,
+  left: `${14 + index * 13}%`,
+  top: `${18 + (index % 3) * 24}%`,
+  size: 4 + (index % 3) * 3,
+  duration: 3 + (index % 3),
+  delay: index * 0.4,
+}))
+
+onMounted(() => {
+  reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  centerTimer = window.setInterval(() => {
+    centerIndex.value = (centerIndex.value + 1) % centerItems.length
+  }, 3000)
+})
+
+onUnmounted(() => {
+  resetTilt()
+  window.clearInterval(centerTimer)
+})
 </script>
 
 <template>
   <section id="beranda" class="relative overflow-hidden bg-white pt-28 pb-16 sm:pt-32 lg:pb-24">
     <div class="pointer-events-none absolute inset-0 -z-10">
-      <div class="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl" />
-      <div class="absolute -right-16 top-40 h-80 w-80 rounded-full bg-brand-50 blur-3xl" />
+      <motion.div
+        class="absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand-100/60 blur-3xl"
+        :animate="{ y: [0, 26, 0], scale: [1, 1.08, 1] }"
+        :transition="{ duration: 12, repeat: Infinity, ease: 'easeInOut' }"
+      />
+      <motion.div
+        class="absolute -right-16 top-40 h-80 w-80 rounded-full bg-brand-50 blur-3xl"
+        :animate="{ y: [0, -30, 0], scale: [1, 1.12, 1] }"
+        :transition="{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 1 }"
+      />
     </div>
 
     <div class="mx-auto grid w-full max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-10">
@@ -88,49 +160,121 @@ const highlights = [
         </motion.div>
       </motion.div>
 
-      <motion.div
-        class="relative"
-        :initial="{ opacity: 0, scale: 0.94, y: 30 }"
-        :animate="{ opacity: 1, scale: 1, y: 0 }"
-        :transition="{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }"
+      <div
+        ref="visualRef"
+        class="relative [perspective:1100px]"
+        @pointermove="onPointerMove"
+        @pointerleave="resetTilt"
       >
-        <div
-          class="relative mx-auto flex h-72 w-full max-w-md items-center justify-center rounded-[2.5rem] border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-brand-100/70 shadow-[var(--shadow-soft)] sm:h-80 lg:h-96"
+        <motion.div
+          class="relative"
+          :initial="{ opacity: 0, scale: 0.94, y: 30 }"
+          :animate="{ opacity: 1, scale: 1, y: 0 }"
+          :transition="{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }"
+          :style="{ rotateX, rotateY, transformPerspective: 1100 }"
         >
-          <motion.span
-            class="text-7xl sm:text-8xl"
-            :animate="{ y: [0, -12, 0] }"
-            :transition="{ duration: 4, repeat: Infinity, ease: 'easeInOut' }"
-          >
-            🥚
-          </motion.span>
-          <motion.span
-            class="absolute -left-2 bottom-10 text-6xl sm:text-7xl"
-            :animate="{ y: [0, -10, 0] }"
-            :transition="{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }"
-          >
-            🐣
-          </motion.span>
-          <motion.span
-            class="absolute -right-1 top-12 text-6xl sm:text-7xl"
-            :animate="{ y: [0, -14, 0] }"
-            :transition="{ duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }"
-          >
-            🐓
-          </motion.span>
+          <div
+            class="pointer-events-none absolute -inset-6 -z-10 rounded-[3.5rem] bg-brand-200/40 blur-2xl"
+          />
+          <motion.div
+            class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-300/40 blur-3xl"
+            :animate="{ scale: [1, 1.16, 1], opacity: [0.65, 1, 0.65] }"
+            :transition="{ duration: 6, repeat: Infinity, ease: 'easeInOut' }"
+          />
 
-          <div class="absolute -bottom-6 left-1/2 w-[88%] -translate-x-1/2 rounded-2xl border border-slate-100 bg-white/95 p-3 shadow-lg backdrop-blur">
-            <div class="grid grid-cols-3 gap-1 text-center">
-              <div v-for="badge in highlights" :key="badge.label" class="px-1">
-                <div class="text-lg">{{ badge.emoji }}</div>
-                <div class="mt-0.5 text-[10px] font-semibold leading-tight text-slate-500">
-                  {{ badge.label }}
-                </div>
-              </div>
+          <div
+            class="relative mx-auto flex h-80 w-full max-w-md items-center justify-center rounded-[2.5rem] border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-brand-100/70 shadow-[var(--shadow-soft)] sm:h-96 lg:h-[26rem]"
+          >
+            <div class="pointer-events-none absolute inset-0 overflow-hidden rounded-[2.5rem]">
+              <motion.div
+                class="absolute left-1/2 top-1/2 h-[150%] w-[150%] -translate-x-1/2 -translate-y-1/2 opacity-70"
+                style="background: conic-gradient(from 0deg, transparent 0deg, rgba(34, 197, 94, 0.22) 90deg, transparent 180deg, rgba(74, 222, 128, 0.2) 270deg, transparent 360deg)"
+                :animate="{ rotate: 360 }"
+                :transition="{ duration: 22, repeat: Infinity, ease: 'linear' }"
+              />
             </div>
+
+            <div class="pointer-events-none absolute inset-0">
+              <div
+                class="absolute left-1/2 top-1/2 h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-brand-200/70"
+              />
+              <motion.div
+                class="absolute inset-0"
+                :animate="{ rotate: 360 }"
+                :transition="{ duration: 26, repeat: Infinity, ease: 'linear' }"
+              >
+                <span
+                  v-for="node in orbit"
+                  :key="node.emoji"
+                  class="absolute"
+                  :style="orbitStyle(node.angle)"
+                >
+                  <motion.span
+                    class="flex items-center gap-1.5 whitespace-nowrap rounded-2xl border border-brand-100 bg-white/95 py-1.5 pl-2 pr-2.5 text-[11px] font-semibold text-slate-700 shadow-md backdrop-blur"
+                    :animate="{ rotate: -360 }"
+                    :transition="{ duration: 26, repeat: Infinity, ease: 'linear' }"
+                  >
+                    <span class="text-base">{{ node.emoji }}</span>
+                    {{ node.label }}
+                  </motion.span>
+                </span>
+              </motion.div>
+            </div>
+
+            <motion.span
+              v-for="particle in particles"
+              :key="particle.id"
+              class="pointer-events-none absolute rounded-full bg-brand-400"
+              :style="{
+                left: particle.left,
+                top: particle.top,
+                width: `${particle.size}px`,
+                height: `${particle.size}px`,
+              }"
+              :animate="{ y: [0, -16, 0], opacity: [0.2, 0.9, 0.2] }"
+              :transition="{
+                duration: particle.duration,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                delay: particle.delay,
+              }"
+            />
+
+            <motion.div
+              class="relative z-10 grid place-items-center"
+              :animate="{ y: [0, -10, 0] }"
+              :transition="{ duration: 5, repeat: Infinity, ease: 'easeInOut' }"
+            >
+              <AnimatePresence>
+                <motion.span
+                  :key="centerIndex"
+                  class="col-start-1 row-start-1 text-[5rem] leading-none drop-shadow-sm sm:text-[7rem]"
+                  :initial="{ opacity: 0, y: 22 }"
+                  :animate="{ opacity: 1, y: 0 }"
+                  :exit="{ opacity: 0, y: -22 }"
+                  :transition="{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }"
+                >
+                  {{ centerItems[centerIndex] }}
+                </motion.span>
+              </AnimatePresence>
+            </motion.div>
           </div>
-        </div>
-      </motion.div>
+
+          <motion.div
+            class="absolute -right-3 -top-3 rounded-2xl border border-brand-100 bg-white px-3 py-2 text-center shadow-lg"
+            :initial="{ opacity: 0, scale: 0.7 }"
+            :animate="{ opacity: 1, scale: 1, y: [0, -8, 0] }"
+            :transition="{
+              opacity: { duration: 0.5, delay: 0.8 },
+              scale: { duration: 0.5, delay: 0.8 },
+              y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
+            }"
+          >
+            <p class="text-[10px] font-semibold text-slate-400">Kualitas</p>
+            <p class="text-sm font-extrabold text-brand-700">100% Kampung</p>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   </section>
 </template>
